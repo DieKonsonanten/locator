@@ -1,0 +1,7 @@
+- Login und Session für User
+- Lizenz und Readme
+- 3 Stimmen pro User
+- Möglichkeit für Mail Notifizierung
+- Balken-Diagramm bei den Ergebnissen
+- schönes Bootstrapping
+- auf einem Server zum Laufen bringen (als Container? nativ?)

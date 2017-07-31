@@ -1,0 +1,17 @@
+<html>
+  <body class='container'>
+    <form action='cast' method='post'>
+      <ul class='unstyled'>
+        <% Choices.each do |id, text| %>
+          <li>
+            <label class='radio'>
+              <input type='radio' name='vote' value='<%= id %>' id='vote_<%= id %>' />
+              <%= text %>
+            </label>
+          </li>
+        <% end %>
+      </ul>
+      <button type='submit' class='btn btn-primary'>Abstimmen!</button>
+    </form>
+  </body>
+</html>

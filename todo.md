@@ -1,3 +1,4 @@
+# ToDo: move to issue tracker
 - Login und Session für User
 - Lizenz und Readme
 - 3 Stimmen pro User

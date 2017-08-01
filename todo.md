@@ -5,3 +5,4 @@
 - Balken-Diagramm bei den Ergebnissen
 - schönes Bootstrapping
 - auf einem Server zum Laufen bringen (als Container? nativ?)
+- hinzufügen von neuen Unternehmungen möglich machen

@@ -1,0 +1,6 @@
+--protected
+--private
+--readme README.md
+lib/**/*.rb
+-
+LICENSE

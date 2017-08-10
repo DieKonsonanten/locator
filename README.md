@@ -26,6 +26,13 @@ To run the locator for debugging while developing just run `/bin/locator`.
 
 The Sinatra App itself is located inside the `lib` directory together with all the default directories like `views` or `lib`.
 
+### Documentation
+
+We are using yard to document our code. For a list of possible tag see http://www.rubydoc.info/gems/yard/file/docs/Tags.md
+
+To generate the documentation run `bundle exec rake yard`. Run `yard server` to start a local webserver. You can access the live documentation via http://localhost:8808/
+
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/DieKonsonanten/locator. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.

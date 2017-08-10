@@ -4,3 +4,5 @@
 lib/**/*.rb
 -
 LICENSE
+CODE_OF_CONDUCT.md
+todo.md

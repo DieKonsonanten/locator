@@ -8,6 +8,9 @@ require 'sinatra/base'
 #require 'sinatra'
 require 'yaml/store'
 
+# This class is the Base Class of the locator.
+# @example Star the application
+#  Locator.run!
 class Locator < Sinatra::Base
 
   set :root, File.dirname(__FILE__)
@@ -43,7 +46,3 @@ class Locator < Sinatra::Base
     erb :results
   end
 end
-
-#module Locator
-  # Your code goes here...
-#end

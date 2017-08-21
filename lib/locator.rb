@@ -1,11 +1,5 @@
 require "lib/version"
-
-
-#http://guides.railsgirls.com/sinatra-app
-#http://localhost:4567/
-
 require 'sinatra/base'
-#require 'sinatra'
 require 'yaml/store'
 
 # This class is the Base Class of the locator.

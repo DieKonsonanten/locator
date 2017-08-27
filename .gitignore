@@ -11,6 +11,7 @@
 /tmp/
 Gemfile.lock
 votes.yml
+users.yml
 
 # Used by dotenv library to load environment variables.
 # .env

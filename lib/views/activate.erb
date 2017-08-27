@@ -1,0 +1,15 @@
+<html>
+  <body class='container'>
+    <form action='/activate' method='post'>
+      <select name="user">
+        <script>
+          var myArray = <%= activated? %>;
+          for(i=0; i<myArray.length; i++) {
+            document.write('<option value="' + myArray[i] +'" name="' + myArray[i] + '">' + myArray[i] + '</option>');
+          }
+        </script>
+      </select>
+      <button type='submit' class='btn btn-primary'>Aktivieren!</button>
+    </form>
+  </body>
+</html>

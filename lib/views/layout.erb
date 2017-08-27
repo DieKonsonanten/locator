@@ -2,11 +2,23 @@
 <html>
   <head>
     <meta charset='UTF-8' />
-    <title>Voting:Unternehmung</title>
+    <title>die Konsonanten: Unternehmung</title>
     <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css' rel='stylesheet' />
   </head>
   <body class='container'>
+    <% if login? %>
+      <form> <br>
+        <input type="button" value="Dashboard" onclick="window.location.href='/dashboard'" />
+        <input type="button" value="Stimmabgabe" onclick="window.location.href='/voting'" />
+        <input type="button" value="Ergebnisse" onclick="window.location.href='/results'" />
+        <% if admin? %>
+            <input type="button" value="Aktivierung" onclick="window.location.href='/activate'" />
+        <% end %>
+        <input type="button" value="Logout" onclick="window.location.href='/logout'" />
+      </form>
+    <% end %>
     <h1><%= @title %></h1>
+    <p><font color="red"><%= @message %></font></p>
     <%= yield %>
   </body>
 </html>

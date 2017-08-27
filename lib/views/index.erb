@@ -1,17 +1,13 @@
 <html>
   <body class='container'>
-    <form action='cast' method='post'>
-      <ul class='unstyled'>
-        <% Choices.each do |id, text| %>
-          <li>
-            <label class='radio'>
-              <input type='radio' name='vote' value='<%= id %>' id='vote_<%= id %>' />
-              <%= text %>
-            </label>
-          </li>
-        <% end %>
-      </ul>
-      <button type='submit' class='btn btn-primary'>Abstimmen!</button>
-    </form>
+    <div>
+      <p>Um am Voting für die kommenden Unternehmungen teilzunehmen, logge dich bitte ein:</p>
+      <form action='/login' method='POST'>
+        <input type="text" name="name" required autocomplete="on" placeholder="Name"><br>
+        <input type="password" name="password" required autocomplete="on" placeholder="Passwort"><br>
+        <button type='submit' class='btn btn-primary'>Einloggen!</button>
+      </form>
+      Solltest du noch keinen Zugang haben, kannst du dich über <a href="/signup">Registrierung</a> registrieren.
+    </div>
   </body>
 </html>

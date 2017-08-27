@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "locator"
   spec.version       = Sinatra::Locator::VERSION
   spec.authors       = ["Karolin Edigkaufer", "Lukas Essig", "Benedikt Bock"]
-  spec.email         = ["ddd@karolin.de", "ddd@Lukas.de", "mail@benedikt1992.de"]
+  spec.email         = ["kedigkaufer@gmail.com", "rocky.frei@gmail.com", "mail@benedikt1992.de"]
 
   spec.summary       = %q{short summary} #TODO
   spec.description   = %q{description} #TODO

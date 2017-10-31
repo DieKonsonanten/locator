@@ -8,8 +8,9 @@
   <body class='container'>
     <% if login? %>
       <form> <br>
-        <input type="button" value="Stimmabgabe" onclick="window.location.href='/voting'" />
+        <input type="button" value="Abstimmung" onclick="window.location.href='/voting'" />
         <input type="button" value="Ergebnisse" onclick="window.location.href='/results'" />
+        <input type="button" value="Profil" onclick="window.location.href='/profile'" />
         <% if admin? %>
             <input type="button" value="Aktivierung" onclick="window.location.href='/activate'" />
         <% end %>

@@ -187,6 +187,11 @@ class Locator < Sinatra::Base
     erb :results
   end
 
+  get '/profile' do
+    @title = 'Dein Profil'
+    erb :profile
+  end
+
   get "/logout" do
     session[:name] = nil
     redirect "/"

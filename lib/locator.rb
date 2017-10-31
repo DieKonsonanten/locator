@@ -98,7 +98,7 @@ class Locator < Sinatra::Base
         user = userTable[params[:name]]
         if user[:passwordhash] == BCrypt::Engine.hash_secret(params[:password], user[:salt])
           session[:name] = params[:name]
-          redirect "/dashboard"
+          redirect "/voting"
         else
           # wrong password?
           redirect "/login"
@@ -159,18 +159,9 @@ class Locator < Sinatra::Base
   end
 
 ### logged in user interaction
-  get "/dashboard" do
-    if login?
-      @title = 'Hallo ' + name + '.'
-      erb :dashboard
-    else
-    redirect "/login"
-    end
-  end
-
   get '/voting' do
     if login?
-      @title = 'Das Voting!'
+      @title = 'Hallo ' + name + '. Bitte stimme ab!'
       erb :voting
     else
       redirect "/login"
@@ -207,7 +198,7 @@ class Locator < Sinatra::Base
       @title = 'Hallo '
       erb :activate
     else
-      redirect "/dashboard"
+      redirect "/voting"
     end
   end
 
@@ -230,15 +221,15 @@ class Locator < Sinatra::Base
           :domain         => "localhost.localdomain" # the HELO domain provided by the client to the server
         }
       @title = 'Hallo ' + name + '.'
-      @message = 'Aktivierung war erfolgreich.'
-      erb :dashboard
+      @message = 'Die Aktivierung war erfolgreich.'
+      erb :layout
     else
       if login? && admin?
-        @title = 'Hallo '
-        @message = 'Aktivierung war nicht erfolgreich!'
+        @title = 'Hallo ' + name + '.'
+        @message = 'Die Aktivierung war nicht erfolgreich!'
         erb :activate
       else
-        redirect "/dashboard"
+        redirect "/voting"
       end
     end
   end

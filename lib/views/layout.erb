@@ -3,22 +3,37 @@
   <head>
     <meta charset='UTF-8' />
     <title>die Konsonanten: Unternehmung</title>
-    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css' rel='stylesheet' />
+    <!-- <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css' rel='stylesheet' /> -->
+    
+      <!-- Bootstrap CSS -->
+      <link href="/NiceAdmin/css/bootstrap.min.css" rel="stylesheet">
+      <!-- bootstrap theme -->
+      <link href="/NiceAdmin/css/bootstrap-theme.css" rel="stylesheet">
+      <!--external css-->
+      <!-- font icon -->
+      <link href="/NiceAdmin/css/elegant-icons-style.css" rel="stylesheet" />
+      <link href="/NiceAdmin/css/font-awesome.css" rel="stylesheet" />
+      <!-- Custom styles -->
+      <link href="/NiceAdmin/css/style.css" rel="stylesheet">
+      <link href="/NiceAdmin/css/style-responsive.css" rel="stylesheet" />
+    
   </head>
-  <body class='container'>
+  <!-- <body class='container'> -->
+    <script src="/NiceAdmin/js/jquery-1.8.3.min.js"></script>
+    <script src="/NiceAdmin/js/bootstrap.min.js"></script>
     <% if login? %>
       <form> <br>
-        <input type="button" value="Abstimmung" onclick="window.location.href='/voting'" />
-        <input type="button" value="Ergebnisse" onclick="window.location.href='/results'" />
-        <input type="button" value="Profil" onclick="window.location.href='/profile'" />
+        <a class="btn btn-default" type="button" onclick="window.location.href='/voting'">Abstimmung</>
+        <a class="btn btn-default" type="button" onclick="window.location.href='/results'">Ergebnisse</>
+        <a class="btn btn-default" type="button" onclick="window.location.href='/profile'">Profil</>
         <% if admin? %>
-            <input type="button" value="Aktivierung" onclick="window.location.href='/activate'" />
+            <a class="btn btn-default" type="button" onclick="window.location.href='/activate'">Aktivierung</>
         <% end %>
-        <input type="button" value="Logout" onclick="window.location.href='/logout'" />
+        <a class="btn btn-default" type="button" onclick="window.location.href='/logout'">Logout</>
       </form>
     <% end %>
     <h1><%= @title %></h1>
     <p><font color="red"><%= @message %></font></p>
     <%= yield %>
-  </body>
+  <!-- </body> -->
 </html>

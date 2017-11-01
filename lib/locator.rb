@@ -18,6 +18,7 @@ class Locator < Sinatra::Base
 
   enable :sessions
   set :root, File.dirname(__FILE__) 
+
   begin
     userTable = YAML.load_file('users.yml')
     puts "use existing user table"

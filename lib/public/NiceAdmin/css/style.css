@@ -13,6 +13,9 @@
 
 
 body {
+    width:80%;
+    margin-left:auto;
+    margin-right:auto;
 
     color: #797979;
 
@@ -24,7 +27,7 @@ body {
 
     padding: 0px !important;
 
-    margin: 0px !important;
+    /*margin: 0px !important;*/
 
     font-size:14px !important;    
 
@@ -49,7 +52,39 @@ ul li {
 
 }
 
+div.navbar-horizontal{
+  text-align: center;
+}
 
+
+ul.navbar-horizontal {
+  margin: auto;
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;
+  display: inline-block;
+}
+li.navbar-horizontal {
+  float: left;
+  border-right: 1px solid #bbb;  
+}
+
+li.navbar-horizontal a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li.navbar-horizontal a:hover {
+    background-color: #111;
+}
+
+li.navbar-horizontal:last-child {
+   border-right: none;
+} 
 
 a, a:hover, a:focus {
 
@@ -59,6 +94,11 @@ a, a:hover, a:focus {
 
     outline: 0;
 
+}
+
+div.dynamic-content {
+  
+  text-align: center;
 }
 
 input:focus, textarea:focus { outline: none; }
@@ -352,23 +392,7 @@ table tr th { color: #688a7e;}
 
 }
 
-.login-form .btn-login {
 
-    background: #f67a6e;
-
-    color: #fff;
-
-    text-transform: uppercase;
-
-    font-weight: 300;
-
-    font-family: 'Lato', sans-serif;
-
-    box-shadow: 0 4px #e56b60;
-
-    margin-bottom: 20px;
-
-}
 
 
 

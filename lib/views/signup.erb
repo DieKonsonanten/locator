@@ -1,18 +1,12 @@
 <div class="mainContent">
   <div class="grid">
-    <p class="centeredDescription col_4">Du bist bereits registriert? Zum Einloggen <a href="/">hier lang.</a></p>
-    <p> Nach Absenden des Formulars muss dein Account durch einen Admin freigeschaltet werden. Die Admins werden per Mail über den neuen Account informiert und ihn schnellstmöglich freischalten. Du erhälst nach erfolgreicher Freischaltung eine Mail.</p>
-    <!-- <div class="col_1">
-      <form class="login-form" action="/signup" method="POST">
-        <input class="shortInput" id="name" type="text" name="name" requiredautocomplete="on" placeholder="Name"><br>
-        <input class="shortInput" id="email" type="email" name="email" required autocomplete="on" placeholder="E-Mail-Adresse"><br>
-        <input class="shortInput" id="password" type="password" name="password" required autocomplete="on" placeholder="Passwort" onchange=" this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
-          if(this.checkValidity()) form.confirmPassword.pattern = this.value;"><br>
-        <input class="shortInput" id="confirmPassword" type="password" required autocomplete="on" placeholder="Passwort wiederholen" onchange=" this.setCustomValidity(this.validity.patternMismatch ? this.title : '');"><br>
-        <button type='submit' class='btn btn-primary'>Account anlegen!</button>
-        <input type="reset" value="Zurücksetzen">
-      </form>
-    </div> -->
+    <div class="alert alert-info fade in">
+      <button data-dismiss="alert" class="close close-sm" type="button">
+        <i class="icon-remove"></i>
+      </button>
+      <strong>Du bist bereits registriert? Zum Einloggen <a href="/">hier lang.</a></strong></br> 
+      Nach Absenden des Formulars muss dein Account durch einen Admin freigeschaltet werden. Die Admins werden per Mail über den neuen Account informiert und ihn schnellstmöglich freischalten. Du erhälst nach erfolgreicher Freischaltung eine Mail.
+    </div>
     
     <form class="login-form" action="/signup" method="post">        
       <div class="login-wrap">
@@ -38,23 +32,11 @@
               <!-- <input type="checkbox" value="remember-me"> Remember me -->
               <!-- <span class="pull-right"> <a href="#"> Forgot Password?</a></span> -->
           </label>
-          <button class="btn btn-primary btn-lg btn-block" type="submit">Registrierung</button>
+          <button class="btn btn-login btn-lg btn-block" type="submit">Registrierung</button>
           <button class="btn btn-info btn-lg btn-block" type="reset">Zurücksetzen</button>
           
       </div>
     </form>
 
-<%#
-    <div class="col_2">
-      <h4>Upload Profile Picture</h4>
-      <div class="placeholderPic"></div>
-      <a href="" class="secondaryButton uploadButton">Choose photo from a url</a>
-      <a href="" class="secondaryButton uploadButton">Choose photo from your computer</a>
-    </div><!-- end 2 column upload profile pic -->
-
-    <div class="col_4">
-      <a href="/" class="button createAccount">Login</a>
-    </div>
-%>
   </div><!-- end grid -->
 </div><!-- end mainContent -->

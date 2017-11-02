@@ -22,18 +22,27 @@
     <script src="/NiceAdmin/js/jquery-1.8.3.min.js"></script>
     <script src="/NiceAdmin/js/bootstrap.min.js"></script>
     <% if login? %>
-      <form> <br>
-        <a class="btn btn-default" type="button" onclick="window.location.href='/voting'">Abstimmung</>
-        <a class="btn btn-default" type="button" onclick="window.location.href='/results'">Ergebnisse</>
-        <a class="btn btn-default" type="button" onclick="window.location.href='/profile'">Profil</>
-        <% if admin? %>
-            <a class="btn btn-default" type="button" onclick="window.location.href='/activate'">Aktivierung</>
-        <% end %>
-        <a class="btn btn-default" type="button" onclick="window.location.href='/logout'">Logout</>
-      </form>
-    <% end %>
+      <div class="navbar-horizontal">
+      <ul class="navbar-horizontal">
+          <li class="navbar-horizontal"><a class="btn btn-primary" type="button" onclick="window.location.href='/voting'"><span class="icon_pencil"></span> Abstimmung</a></li>
+          <li class="navbar-horizontal"><a class="btn btn-primary" type="button" onclick="window.location.href='/results'"><span class="icon_piechart"></span> Ergebnisse</a></li>
+          <li class="navbar-horizontal"><a class="btn btn-primary" type="button" onclick="window.location.href='/profile'"><span class="icon_profile"></span> Profil</a></li>
+          <% if admin? %>
+              <li class="navbar-horizontal"><a class="btn btn-primary" type="button" onclick="window.location.href='/activate'"><span class="icon_cogs"></span> Aktivierung</a></li>
+          <% end %>
+          <li class="navbar-horizontal"><a class="btn btn-primary" type="button" onclick="window.location.href='/logout'"><span class="icon_lock_alt"></span> Logout</a></li>
+      </ul>
+    </div>
+  <% end %>
+  <div class="dynamic-content">
     <h1><%= @title %></h1>
-    <p><font color="red"><%= @message %></font></p>
+    <!-- <div class="alert alert-block alert-danger fade in">
+      <button data-dismiss="alert" class="close close-sm" type="button">
+        <i class="icon-remove"></i>
+      </button>
+      <strong>Achtung!</strong> <%= @message %> -->
+    </div>
     <%= yield %>
+  </div>
   <!-- </body> -->
 </html>

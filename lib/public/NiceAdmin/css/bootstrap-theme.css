@@ -1893,7 +1893,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary:active,
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
-  color: #092c53;
+  color: #ffffff;
   border-color: #092c53;
   background: transparent;  
 }
@@ -1920,6 +1920,46 @@ fieldset[disabled] .btn-primary.active {
   background-color: #007aff;
   border-color: #007aff;
 }
+
+.btn-login {
+  color: #ffffff;
+  background-color: #092c53;
+  border-color: #092c53;
+}
+.btn-login:hover,
+.btn-login:focus,
+.btn-login:active,
+.btn-login.active,
+.open .dropdown-toggle.btn-login {
+  color: #092c53;
+  border-color: #092c53;
+  background: transparent;  
+}
+.btn-login:active,
+.btn-login.active,
+.open .dropdown-toggle.btn-login {
+  background-image: none;
+}
+.btn-login.disabled,
+.btn-login[disabled],
+fieldset[disabled] .btn-login,
+.btn-login.disabled:hover,
+.btn-login[disabled]:hover,
+fieldset[disabled] .btn-login:hover,
+.btn-login.disabled:focus,
+.btn-login[disabled]:focus,
+fieldset[disabled] .btn-login:focus,
+.btn-login.disabled:active,
+.btn-login[disabled]:active,
+fieldset[disabled] .btn-login:active,
+.btn-login.disabled.active,
+.btn-login[disabled].active,
+fieldset[disabled] .btn-login.active {
+  background-color: #007aff;
+  border-color: #007aff;
+}
+
+
 .btn-warning {
   color: #ffffff;
   background-color: #ffcc00;

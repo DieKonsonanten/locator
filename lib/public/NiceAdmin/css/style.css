@@ -2163,6 +2163,7 @@ div[data-role="editor-toolbar"] {
 }
 
 .panel .panel-heading {
+  background-color: #092c53;
 
   line-height: 34px;
 
@@ -2204,7 +2205,6 @@ div[data-role="editor-toolbar"] {
 
   font-size: 14px;
 
-  border-right:1px solid #e6e6e6 ;
 
 }
 
@@ -5110,7 +5110,7 @@ ul.ft-link li a i {
 
 .project-team, .panel-title,.progress-panel{
 
-    background: #F7F7F7;
+    background: #092c53;
 
 }
 
@@ -7841,6 +7841,8 @@ ul.amounts li {
 .m-bot20 {
 
     margin-bottom: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
 
 }
 

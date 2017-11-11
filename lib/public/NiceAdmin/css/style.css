@@ -16,7 +16,7 @@ body {
     width:80%;
     margin-left:auto;
     margin-right:auto;
-
+    text-align:center;
     color: #797979;
 
     /*background: #eeeeee;*/
@@ -123,6 +123,14 @@ a, a:hover, a:focus {
     outline: 0;
 
 }
+
+.dropdown_activate {
+   width: 25%;
+   margin-right: 10px;
+   height: 30px; 
+}
+
+/** Toggle Switch Button **/
 
 .switch {
 	position: relative;

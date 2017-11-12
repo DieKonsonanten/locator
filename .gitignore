@@ -10,8 +10,7 @@
 /test/version_tmp/
 /tmp/
 Gemfile.lock
-votes.yml
-users.yml
+*.yml
 
 # Used by dotenv library to load environment variables.
 # .env

@@ -1,0 +1,63 @@
+<!-- https://bootsnipp.com/snippets/featured/dynamic-form-fields-add-amp-remove-bs3 -->
+<!-- https://bootsnipp.com/snippets/AXVrV -->
+<html>
+  <body>
+    <div class="panel panel-default m-bot20">
+              <div class="panel-heading">
+                <div class="pull-left">Neue Aktivität hinzufügen</div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                <div class="padd">
+
+                  <div class="form quick-post">
+                    <!-- Edit profile form (not working)-->
+                    <form class="form-horizontal" action="/new_activity" method="post" >
+                      <!-- Title -->
+                      <div class="form-group">
+                        <label class="control-label col-lg-2" for="title">Name</label>
+                        <div class="col-lg-10">
+                          <input class="form-control" id="activity" name="activity" type="text">
+                        </div>
+                      </div>
+                      <!-- Content -->
+                      <div class="form-group">
+                        <label class="control-label col-lg-2" for="content">Beschreibung</label>
+                        <div class="col-lg-10">
+                          <textarea class="form-control" id="desc" name="desc"></textarea>
+                        </div>
+                      </div>
+                      <!-- Ort -->
+                      <div class="form-group">
+                        <label class="control-label col-lg-2" for="title">Ort</label>
+                        <div class="col-lg-10">
+                          <input class="form-control" id="location" name="location" type="text">
+                        </div>
+                      </div>
+                      <!-- URL -->
+                      <div class="form-group">
+                        <label class="control-label col-lg-2" for="title">URL</label>
+                        <div class="col-lg-10">
+                          <input class="form-control" id="url" name="url" type="url">
+                        </div>
+                      </div>
+                      <!-- Buttons -->
+                      <div class="form-group">
+                        <!-- Buttons -->
+                        <div class="col-lg-offset-2 col-lg-9">
+                          <button type="submit" class="btn btn-primary">Speichern</button>
+                          <button type="reset" class="btn btn-default" onClick="window.location='/voting';">Abbrechen</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>
+  </body>
+</html>

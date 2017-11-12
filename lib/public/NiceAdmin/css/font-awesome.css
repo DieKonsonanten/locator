@@ -70,6 +70,7 @@
 }
 .pull-left {
   float: left;
+  color: #FFFFFF; 
 }
 .fa.pull-left {
   margin-right: .3em;

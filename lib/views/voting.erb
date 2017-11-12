@@ -1,35 +1,37 @@
 <html>
+<script src="js/locator-scripts.js"></script>
 <body>
 <div class="panel-group m-bot20" id="accordion">
-   <% Choices.each do |id, text| %> 
-       <div class="panel panel-default accordion-toggle collapsed"  data-parent="#accordion">
+   <% VotingTable.each do |activity, values| %> 
+    <div class="panel panel-default accordion-toggle collapsed"  data-parent="#accordion">
     <div class="panel-heading">
       <ul class="voting_item">
-          <li class="voting_item"><a href="#collapse<%= id %>" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion">
+          <li class="voting_item"><a href="#collapse<%= activity %>" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion">
             <i class="fa fa-chevron-down"></i></a></li>
           <li class="voting_item">
             <h4 class="panel-title">
-              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= id %>">
-                <%= text %>
+              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= activity %>">
+                <%= activity %>
               </a>
             </h4>
           </li>
           <li class="voting_item">
             <label class="switch switch-slide">
-              <input class="switch-input" type="checkbox">
+              <input id="<%= activity %>" class="switch-input" type="checkbox" <%= getCheckedStatus(activity) %> >
                 <span class="switch-label" data-on="Ja" data-off="Nein"></span> 
                 <span class="switch-handle"></span> 
             </label> 
         </li>
       </ul>
     </div>
-    <div id="collapse<%= id %>" class="panel-collapse collapse" style="height: auto;">
+    <div id="collapse<%= activity %>" class="panel-collapse collapse" style="height: auto;">
       <div class="panel-body">
-        <%= text %>
+        <%= values['desc'] %>
       </div>
     </div>
   </div>
   <% end %>
 </div>
+<a class="btn btn-primary" type="button" onclick="window.location.href='/new_activity'"><span class="icon_plus"></span></a>
 </body>
 </html>

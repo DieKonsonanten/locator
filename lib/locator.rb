@@ -27,13 +27,15 @@ class Locator < Sinatra::Base
     userTable = {}
     @store_user = YAML::Store.new 'users.yml'
   end
-
-  Choices = {
-    'KLE' => 'Klettern',
-    'TRA' => 'Trampolin',
-    'WAN' => 'Wanders',
-    'FRE' => 'Freizeitpark',
-  }
+  
+  begin
+    VotingTable = YAML.load_file('votes2.yml')
+    puts "use existing voting table"
+  rescue Errno::ENOENT
+    puts "creating new voting table"
+    VotingTable = {}
+    @store_votes = YAML::Store.new 'votes2.yml'
+  end
 
 ## Helpers
   helpers do
@@ -80,6 +82,20 @@ class Locator < Sinatra::Base
       end
       return not_activated
     end
+    
+    def to_boolean(str)
+      str == 'true'
+    end
+    
+    def getCheckedStatus(str)
+      allVotes = YAML.load_file('votes2.yml')
+      if allVotes[str]['votes'].include? name
+        return "checked"
+      else
+        return ""
+      end
+    end
+
   end
 
 ### Default Redirect
@@ -170,21 +186,26 @@ class Locator < Sinatra::Base
   end
 
   post '/cast' do
-    @title = 'Vielen Dank für deine Teilnahme!'
-    @vote  = params['vote']
-    @store = YAML::Store.new 'votes.yml'
-    @store.transaction do
-      @store['votes'] ||= {}
-      @store['votes'][@vote] ||= 0
-      @store['votes'][@vote] += 1
+    vote  = params['vote']
+    isChecked = to_boolean(params['isChecked'])
+    if isChecked
+    #  @store_votes[@vote]['votes'] |= [name]
+      VotingTable[vote]["votes"].push(name)
+    else
+      VotingTable[vote]["votes"].delete(name)
+    #  @store_votes[@vote]['votes'].delete(name)
     end
-    erb :cast
+    File.write('votes2.yml', VotingTable.to_yaml)
   end
+    # @store_votes = YAML::Store.new 'votes2.yml'
+    # @store_votes.transaction do
+    #   @store_votes[@vote]['votes'] ||= 0
+
+  #  VotingTable = YAML.load_file('votes2.yml')
+  
 
   get '/results' do
     @title = 'Ergebnisse:'
-    @store = YAML::Store.new 'votes.yml'
-    @votes = @store.transaction { @store['votes'] }
     erb :results
   end
 
@@ -198,6 +219,23 @@ class Locator < Sinatra::Base
     redirect "/"
   end
 
+  get '/new_activity' do
+    erb :new_activity
+  end
+
+  post '/new_activity' do
+    VotingTable[params['activity']] = {
+      "desc" => params['desc'],
+      "votes" => [],
+      "location" => 
+      { params['location'] => 
+        { "votes" => [] },
+        "url" => params['url']
+      }
+    }
+    File.write('votes2.yml', VotingTable.to_yaml)
+    redirect '/voting'
+  end
 ### admin user interaction
   get '/activate' do
     if login? && admin?

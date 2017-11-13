@@ -1,5 +1,4 @@
 <html>
-<script src="js/locator-scripts.js"></script>
 <body>
 <div class="panel-group m-bot20" id="accordion">
    <% VotingTable.each do |activity, values| %> 
@@ -17,7 +16,7 @@
           </li>
           <li class="voting_item">
             <label class="switch switch-slide">
-              <input id="<%= activity %>" class="switch-input" type="checkbox" <%= getCheckedStatus(activity) %> >
+              <input id="<%= activity %>" class="switch-input" type="checkbox" onclick="change_voting(this);"<%= getCheckedStatus(activity) %> >
                 <span class="switch-label" data-on="Ja" data-off="Nein"></span> 
                 <span class="switch-handle"></span> 
             </label> 

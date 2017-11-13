@@ -130,6 +130,17 @@ a, a:hover, a:focus {
    height: 30px; 
 }
 
+.add-location-btn {
+  padding-right: 15px;
+  padding-top: 10px;
+  text-align: right;
+}
+
+.add-location-txtfield {
+  padding-bottom: 5px;
+}
+
+
 /** Toggle Switch Button **/
 
 .switch {

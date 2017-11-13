@@ -224,14 +224,29 @@ class Locator < Sinatra::Base
   end
 
   post '/new_activity' do
+    # params[:items].each do |id, value|
+    #   pp id
+    #   pp value
+  # end
+  @params = params
+  location = []
+  @params.each do |name, value|
+    if name.match('location')
+      instance = name.slice(8) 
+      url = 'url' + instance
+      loc = { 
+          params[name] => {
+          "votes" => [],
+          "url" => params[url] }
+          }
+      location.push(loc)
+    end
+  end
+  
     VotingTable[params['activity']] = {
       "desc" => params['desc'],
       "votes" => [],
-      "location" => 
-      { params['location'] => 
-        { "votes" => [] },
-        "url" => params['url']
-      }
+      "location" => location
     }
     File.write('votes2.yml', VotingTable.to_yaml)
     redirect '/voting'

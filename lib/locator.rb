@@ -29,12 +29,12 @@ class Locator < Sinatra::Base
   end
   
   begin
-    VotingTable = YAML.load_file('votes2.yml')
+    VotingTable = YAML.load_file('votes.yml')
     puts "use existing voting table"
   rescue Errno::ENOENT
     puts "creating new voting table"
     VotingTable = {}
-    @store_votes = YAML::Store.new 'votes2.yml'
+    @store_votes = YAML::Store.new 'votes.yml'
   end
 
 ## Helpers
@@ -88,7 +88,7 @@ class Locator < Sinatra::Base
     end
     
     def getCheckedStatus(str)
-      allVotes = YAML.load_file('votes2.yml')
+      allVotes = YAML.load_file('votes.yml')
       if allVotes[str]['votes'].include? name
         return "checked"
       else
@@ -189,20 +189,12 @@ class Locator < Sinatra::Base
     vote  = params['vote']
     isChecked = to_boolean(params['isChecked'])
     if isChecked
-    #  @store_votes[@vote]['votes'] |= [name]
       VotingTable[vote]["votes"].push(name)
     else
       VotingTable[vote]["votes"].delete(name)
-    #  @store_votes[@vote]['votes'].delete(name)
     end
-    File.write('votes2.yml', VotingTable.to_yaml)
+    File.write('votes.yml', VotingTable.to_yaml)
   end
-    # @store_votes = YAML::Store.new 'votes2.yml'
-    # @store_votes.transaction do
-    #   @store_votes[@vote]['votes'] ||= 0
-
-  #  VotingTable = YAML.load_file('votes2.yml')
-  
 
   get '/results' do
     @title = 'Ergebnisse:'
@@ -248,7 +240,7 @@ class Locator < Sinatra::Base
       "votes" => [],
       "location" => location
     }
-    File.write('votes2.yml', VotingTable.to_yaml)
+    File.write('votes.yml', VotingTable.to_yaml)
     redirect '/voting'
   end
 ### admin user interaction

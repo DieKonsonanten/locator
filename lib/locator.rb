@@ -95,6 +95,16 @@ class Locator < Sinatra::Base
         return ""
       end
     end
+    
+    def getVotedActivities
+      counter = 0
+      VotingTable.each do |activity, attributes|
+        if VotingTable[activity]['votes'].include? name
+            counter += 1
+        end
+      end
+      return counter
+    end
 
   end
 
@@ -189,7 +199,12 @@ class Locator < Sinatra::Base
     vote  = params['vote']
     isChecked = to_boolean(params['isChecked'])
     if isChecked
-      VotingTable[vote]["votes"].push(name)
+      if getVotedActivities >= 3
+        pp "Fehler"
+        body 'reached voting limit'
+      else
+        VotingTable[vote]["votes"].push(name)
+      end
     else
       VotingTable[vote]["votes"].delete(name)
     end

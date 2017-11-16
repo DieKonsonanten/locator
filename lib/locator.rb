@@ -18,6 +18,16 @@ class Locator < Sinatra::Base
 
   enable :sessions
   set :root, File.dirname(__FILE__) 
+# global vars
+def initialize
+  
+  super()
+  @MAX_VOTES_REACHED_CODE=900
+  @OK_CODE=200
+  
+end
+#
+
 
   begin
     userTable = YAML.load_file('users.yml')
@@ -196,12 +206,12 @@ class Locator < Sinatra::Base
   end
 
   post '/cast' do
+    pStatus = @OK_CODE
     vote  = params['vote']
     isChecked = to_boolean(params['isChecked'])
     if isChecked
       if getVotedActivities >= 3
-        pp "Fehler"
-        body 'reached voting limit'
+        pStatus=@MAX_VOTES_REACHED_CODE
       else
         VotingTable[vote]["votes"].push(name)
       end
@@ -209,6 +219,7 @@ class Locator < Sinatra::Base
       VotingTable[vote]["votes"].delete(name)
     end
     File.write('votes.yml', VotingTable.to_yaml)
+    status pStatus
   end
 
   get '/results' do

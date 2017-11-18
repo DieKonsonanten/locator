@@ -26,9 +26,22 @@
     <div id="collapse<%= activity %>" class="panel-collapse collapse" style="height: auto;">
       <div class="panel-body">
         <%= values['desc'] %>
+          <% values['location'].each do |locations| %>
+            <% locations.each do |location, infos| %>
+              <% if values['location'].length > 1 %>
+                <div class="radio">
+                  <label>
+                    <input name="<%=activity%>_location" id="<%= location %>" value="<%= location %>" type="radio" onclick="change_location(this,'<%= activity %>')">
+                    <%= location %>
+                    <a href="http://<%= infos['url'] %>"><%= infos['url']%></a>
+                  </label>
+                </div> 
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
   <% end %>
 </div>
 <a class="btn btn-primary" type="button" onclick="window.location.href='/new_activity'"><span class="icon_plus"></span></a>

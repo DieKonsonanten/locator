@@ -204,7 +204,7 @@ end
     end
   end
 
-  post '/cast' do
+  post '/cast_activity' do
     pStatus = @OK_CODE
     vote  = params['vote']
     isChecked = to_boolean(params['isChecked'])
@@ -216,6 +216,27 @@ end
       end
     else
       VotingTable[vote]["votes"].delete(name)
+    end
+    File.write('votes.yml', VotingTable.to_yaml)
+    status pStatus
+  end
+
+  post '/cast_location' do
+    pStatus = @OK_CODE
+    location  = params['loc']
+    activity  = params['activity']
+    isChecked = to_boolean(params['isChecked'])
+    index = ''
+    if isChecked
+      VotingTable[activity]['location'].each do |item|
+        item.values[0]['votes'].delete(name)
+      end
+      VotingTable[activity]['location'].each do |list|
+          if list.has_key? (location)
+            index = VotingTable[activity]['location'].index(list)
+          end
+        end
+      VotingTable[activity]['location'][index][location]['votes'].push(name)
     end
     File.write('votes.yml', VotingTable.to_yaml)
     status pStatus

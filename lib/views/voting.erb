@@ -1,7 +1,7 @@
 <html>
 <body>
 <div class="panel-group m-bot20" id="accordion">
-   <% VotingTable.each do |activity, values| %> 
+   <% VotingTable.sort.each do |activity, values| %> 
     <div class="panel panel-default accordion-toggle collapsed"  data-parent="#accordion">
     <div class="panel-heading">
       <ul class="voting_item">

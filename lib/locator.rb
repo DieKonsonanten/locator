@@ -17,16 +17,16 @@ class Locator < Sinatra::Base
 # gives value    pp settings.email[:user]
 
   enable :sessions
-  set :root, File.dirname(__FILE__) 
+  set :root, File.dirname(__FILE__)
+
 # global vars
 def initialize
-  
+
   super()
   @MAX_VOTES_REACHED_CODE=900
   @OK_CODE=200
-  
+
 end
-#
 
 
   begin
@@ -37,7 +37,7 @@ end
     userTable = {}
     @store_user = YAML::Store.new 'users.yml'
   end
-  
+
   begin
     VotingTable = YAML.load_file('votes.yml')
     puts "use existing voting table"
@@ -92,11 +92,11 @@ end
       end
       return not_activated
     end
-    
+
     def to_boolean(str)
       str == 'true'
     end
-    
+
     def getCheckedStatus(str)
       allVotes = YAML.load_file('votes.yml')
       if allVotes[str]['votes'].include? name
@@ -105,7 +105,7 @@ end
         return ""
       end
     end
-    
+
     def getVotedActivities
       counter = 0
       VotingTable.each do |activity, attributes|
@@ -115,7 +115,6 @@ end
       end
       return counter
     end
-
   end
 
 ### Default Redirect
@@ -188,7 +187,7 @@ end
         }
       redirect "/login"
     else
-        # username already used 
+        # username already used
         @title = 'Registrierung!'
         @message = "Dieser Username ist bereits vergeben. Bitte verwende einen anderen Namen."
         erb :signup
@@ -250,9 +249,9 @@ end
   location = []
   @params.each do |name, value|
     if name.match('location')
-      instance = name.slice(8) 
+      instance = name.slice(8)
       url = 'url' + instance
-      loc = { 
+      loc = {
           params[name] => {
           "votes" => [],
           "url" => params[url] }
@@ -260,13 +259,13 @@ end
       location.push(loc)
     end
   end
-  
+
     VotingTable[params['activity']] = {
       "desc" => params['desc'],
       "votes" => [],
       "location" => location
     }
-    File.write('votes.yml', VotingTable.to_yaml)
+    File.write('votes.yml', Hash[VotingTable.sort].to_yaml)
     redirect '/voting'
   end
 ### admin user interaction

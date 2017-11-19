@@ -97,12 +97,26 @@ end
       str == 'true'
     end
 
-    def getCheckedStatus(str)
+    def getCheckedActivity(str)
       allVotes = YAML.load_file('votes.yml')
       if allVotes[str]['votes'].include? name
         return "checked"
       else
         return ""
+      end
+    end
+
+    def getCheckedLocation(location, activity)
+      allVotes = YAML.load_file('votes.yml')
+      VotingTable[activity]['location'].each do |list|
+        if list.has_key? (location)
+          index = VotingTable[activity]['location'].index(list)
+          if allVotes[activity]['location'][index][location]['votes'].include? name
+            return "checked"
+          else
+            return ""
+          end
+        end
       end
     end
 

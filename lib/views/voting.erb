@@ -1,7 +1,7 @@
 <html>
 <body>
 <div class="panel-group m-bot20" id="accordion">
-   <% VotingTable.sort.each do |activity, values| %> 
+   <% VotingTable.sort.each do |activity, values| %>
     <div class="panel panel-default accordion-toggle collapsed"  data-parent="#accordion">
     <div class="panel-heading">
       <ul class="voting_item">
@@ -16,10 +16,10 @@
           </li>
           <li class="voting_item">
             <label class="switch switch-slide">
-              <input id="<%= activity %>" class="switch-input" type="checkbox" onclick="change_voting(this);"<%= getCheckedStatus(activity) %> >
-                <span class="switch-label" data-on="Ja" data-off="Nein"></span> 
-                <span class="switch-handle"></span> 
-            </label> 
+              <input id="<%= activity %>" class="switch-input" type="checkbox" onclick="change_voting(this);"<%= getCheckedActivity(activity) %> >
+                <span class="switch-label" data-on="Ja" data-off="Nein"></span>
+                <span class="switch-handle"></span>
+            </label>
         </li>
       </ul>
     </div>
@@ -31,11 +31,18 @@
               <% if values['location'].length > 1 %>
                 <div class="radio">
                   <label>
-                    <input name="<%=activity%>_location" id="<%= location %>" value="<%= location %>" type="radio" onclick="change_location(this,'<%= activity %>')">
+                    <input name="<%=activity%>_location" id="<%= location %>" value="<%= location %>" type="radio" onclick="change_location(this,'<%= activity %>');"<%= getCheckedLocation(location, activity) %>>
                     <%= location %>
                     <a href="http://<%= infos['url'] %>"><%= infos['url']%></a>
                   </label>
-                </div> 
+                </div>
+              <% else %>
+                <div>
+                  <label>
+                    <%= location %>
+                    <a href="http://<%= infos['url'] %>"><%= infos['url']%></a>
+                  </label>
+                </div>
               <% end %>
             <% end %>
           <% end %>

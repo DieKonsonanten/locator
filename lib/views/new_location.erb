@@ -1,0 +1,40 @@
+<html>
+<body>
+  <div class="panel panel-default m-bot20">
+      <div class="panel-heading">
+      <div class="pull-left">Neuen Ort für <%= params[:activity]%> hinzufügen</div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+      <div class="padd">
+        <div class="form quick-post">
+          <form class="form-horizontal" action="/new_location" method="post">
+            <!-- Ort & URL multi -->
+            <div id="counter_fields"></div>
+            <div class="form-group">
+              <label class="control-label col-lg-2" for="content">Ort</label>
+              <div class="add-location-txtfield col-lg-10">
+                <input type="text" class="form-control" id="location" name="location" value="" >
+              </div>
+              <label class="control-label col-lg-2" for="content">URL</label>
+              <div class="add-location-txtfield col-lg-10">
+                <input type="text" class="form-control" id="url" name="url" value="">
+              </div>
+                <input type="hidden" class="form-control" id="activity" name="activity" value="<%= params[:activity]%>">
+              </div>
+            </div>
+            <!-- Buttons -->
+            <div class="form-group">
+              <!-- Buttons -->
+              <div class="col-lg-offset-2 col-lg-9">
+                <button type="submit" class="btn btn-primary">Speichern</button>
+                <button type="reset" class="btn btn-default" onClick="window.location='/voting';">Abbrechen</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    <div class="widget-foot">
+  </div>
+</body>
+</html>

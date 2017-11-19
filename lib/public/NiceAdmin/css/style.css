@@ -124,6 +124,10 @@ a, a:hover, a:focus {
 
 }
 
+.btn-location {
+  padding: 1px 5px;
+}
+
 .dropdown_activate {
    width: 25%;
    margin-right: 10px;

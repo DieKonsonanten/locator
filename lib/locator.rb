@@ -276,33 +276,49 @@ end
   end
 
   post '/new_activity' do
-    # params[:items].each do |id, value|
-    #   pp id
-    #   pp value
-  # end
-  @params = params
-  location = []
-  @params.each do |name, value|
-    if name.match('location')
-      instance = name.slice(8)
-      url = 'url' + instance
-      loc = {
+    @params = params
+    location = []
+    @params.each do |name, value|
+      if name.match('location')
+        instance = name.slice(8)
+        url = 'url' + instance
+        loc = {
           params[name] => {
           "votes" => [],
           "url" => params[url] }
           }
-      location.push(loc)
+        location.push(loc)
+        location.sort_by! { |h| h.first.first.downcase }
+      end
     end
-  end
 
     VotingTable[params['activity']] = {
       "desc" => params['desc'],
       "votes" => [],
       "location" => location
     }
-    File.write('votes.yml', Hash[VotingTable.sort].to_yaml)
+    File.write('votes.yml', Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
     redirect '/voting'
   end
+
+  get '/new_location' do
+    erb :new_location
+  end
+
+  post '/new_location' do
+    loc = {
+      params[:location] => {
+        "votes" => [],
+        "url" => params[:url]
+      }
+    }
+
+    VotingTable[params[:activity]]['location'].push(loc)
+    VotingTable[params[:activity]]['location'].sort_by! { |h| h.first.first.downcase }
+    File.write('votes.yml', VotingTable.to_yaml)
+    redirect '/voting'
+  end
+
 ### admin user interaction
   get '/activate' do
     if login? && admin?

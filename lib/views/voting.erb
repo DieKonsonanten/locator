@@ -1,7 +1,7 @@
 <html>
 <body>
 <div class="panel-group m-bot20" id="accordion">
-   <% VotingTable.sort.each do |activity, values| %>
+    <% VotingTable.sort_by { |x| x.first.downcase }.each do |activity, values| %>
     <div class="panel panel-default accordion-toggle collapsed"  data-parent="#accordion">
     <div class="panel-heading">
       <ul class="voting_item">
@@ -46,6 +46,7 @@
               <% end %>
             <% end %>
           <% end %>
+          <a class="btn btn-primary btn-location" type="button" onclick="window.location.href='/new_location?activity=<%= activity%>'"><span class="icon_plus"></span></a>
         </div>
       </div>
     </div>

@@ -1,20 +1,83 @@
-<table class='table table-hover table-striped'>
-  <% VotingTable.each do |activity, values| %>
-  <tr>
-    <th><%= activity %></th>
-    <td><%= values['votes'].count %>
-      <td><%= '#' * (values['votes'].count) %></td>
-    </tr>
-    <% end %>
-  </table>
+<body>
+  
+  <!-- chartjs -->
+  <script src="/js/chart.js/dist/Chart.js"></script>
+  <script src="/js/chart.js/samples/utils.js"></script>
+  
+  
   <div class="col-lg-6">
     <section class="panel">
       <header class="panel-heading">
         Bar
       </header>
       <div class="panel-body text-center">
-        <canvas id="bar" height="600" width="1000" style="width: 500px; height: 300px;"></canvas>
+        <canvas id="bar" height="450" width="600" style="width: 500px; height: 300px;"></canvas>
       </div>
     </section>
   </div>
-  <p><a href='/voting'>Erneut teilnehmen!</a></p>
+  <script>
+  var activity_labels= [];
+  var myData = [];
+  var HashTable = new Object();
+  
+  <% VotingTable.sort_by { |x| x.first.downcase }.each_with_index do |(activity, values),index| %>
+    activity_labels.push('<%= activity %>');
+    myData.push("<%= values['votes'].count %>");
+    HashTable['<%= activity %>'] = new Array();
+    <% values['location'].each do |locations| %>
+      <% locations.each do |location, infos| %>
+      HashTable['<%= activity %>'].push('<%= location %>' +":\t"+"<%= infos['votes'].count %>" );
+      <% end %>
+    <% end %>
+  <% end %>
+
+  
+  var barChartData = {
+    labels : activity_labels,
+    datasets : [
+      {
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data : myData
+      }
+    ]
+  };
+  
+  var barChart =        {
+    type: 'bar',
+    data: barChartData,
+    options: {
+      responsive: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+            //max: 15,
+            min: 0,
+            stepSize: 1
+          }
+        }]
+      },
+      legend: {
+        display: false
+      },
+      tooltips: {
+        enabled: true,
+        mode: 'single',
+        callbacks: {
+          label: function(tooltipItems, data) { 
+            var item=tooltipItems.xLabel;
+            var multistringText = [];
+            for (var i in HashTable[item]) {
+              multistringText.push(HashTable[item][i])
+            }
+            return multistringText;
+          }
+        }
+      },  
+    } //options end
+  } // barChart end
+  
+  var myLine = new Chart(document.getElementById("bar").getContext("2d"),barChart);
+  
+  </script>
+</body>

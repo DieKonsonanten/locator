@@ -5,10 +5,9 @@
   <script src="/js/chart.js/samples/utils.js"></script>
   
   
-  <div class="col-lg-6">
+  <div class="result-div">
     <section class="panel">
       <header class="panel-heading">
-        Bar
       </header>
       <div class="panel-body text-center">
         <canvas id="bar" height="450" width="600" style="width: 500px; height: 300px;"></canvas>
@@ -18,15 +17,19 @@
   <script>
   var activity_labels= [];
   var myData = [];
+  var bgColors = [];
   var HashTable = new Object();
   
   <% VotingTable.sort_by { |x| x.first.downcase }.each_with_index do |(activity, values),index| %>
     activity_labels.push('<%= activity %>');
     myData.push("<%= values['votes'].count %>");
+    bgColors.push(getRandomColor());
     HashTable['<%= activity %>'] = new Array();
     <% values['location'].each do |locations| %>
+      var _count = parseInt("<%= values['location'].count %>");
       <% locations.each do |location, infos| %>
-      HashTable['<%= activity %>'].push('<%= location %>' +":\t"+"<%= infos['votes'].count %>" );
+        var dispStr = (_count > 1) ? "<%= location %> :\t<%= infos['votes'].count %>" :"<%= location %>";
+        HashTable['<%= activity %>'].push(dispStr);
       <% end %>
     <% end %>
   <% end %>
@@ -36,8 +39,9 @@
     labels : activity_labels,
     datasets : [
       {
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
+        // backgroundColor: 'rgb(255, 99, 132)',
+        backgroundColor: bgColors,
+        borderColor: 'white',
         data : myData
       }
     ]

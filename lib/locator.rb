@@ -13,22 +13,31 @@ require 'pp'
 class Locator < Sinatra::Base
   register Sinatra::ConfigFile
   config_file '/Users/d0233972/.locator_config.yml'
+  set :bind, '0.0.0.0'
 # gives hash    pp settings.email
 # gives value    pp settings.email[:user]
 
   enable :sessions
   set :root, File.dirname(__FILE__)
 
-# global vars
-def initialize
+  # global vars
+  def initialize
 
-  super()
-  @MAX_VOTES_REACHED_CODE=900
-  @OK_CODE=200
+    super()
+    @MAX_VOTES_REACHED_CODE=900
+    @OK_CODE=200
 
-end
+  end
 
+  register do
+    def auth (type)
+      condition do
+        redirect "/login" unless send("login?")
+      end
+    end
+  end
 
+  
   begin
     userTable = YAML.load_file('users.yml')
     puts "use existing user table"
@@ -132,7 +141,7 @@ end
   end
 
 ### Default Redirect
-  get '/' do
+  get '/', :auth => :user do 
     redirect "/login"
   end
 
@@ -209,16 +218,12 @@ end
   end
 
 ### logged in user interaction
-  get '/voting' do
-    if login?
+  get '/voting', :auth => :user do
       @title = 'Hallo ' + name + '. Bitte stimme ab!'
       erb :voting
-    else
-      redirect "/login"
-    end
   end
 
-  post '/cast_activity' do
+  post '/cast_activity', :auth => :user do
     pStatus = @OK_CODE
     vote  = params['vote']
     isChecked = to_boolean(params['isChecked'])
@@ -235,7 +240,7 @@ end
     status pStatus
   end
 
-  post '/cast_location' do
+  post '/cast_location', :auth => :user do
     pStatus = @OK_CODE
     location  = params['loc']
     activity  = params['activity']
@@ -256,12 +261,12 @@ end
     status pStatus
   end
 
-  get '/results' do
-    @title = 'Ergebnisse:'
+  get '/results', :auth => :user do
+    @title = 'Ergebnisse'
     erb :results
   end
 
-  get '/profile' do
+  get '/profile', :auth => :user do
     @title = 'Dein Profil'
     erb :profile
   end
@@ -271,11 +276,11 @@ end
     redirect "/"
   end
 
-  get '/new_activity' do
+  get '/new_activity', :auth => :user do
     erb :new_activity
   end
 
-  post '/new_activity' do
+  post '/new_activity', :auth => :user do
     @params = params
     location = []
     @params.each do |name, value|
@@ -301,11 +306,11 @@ end
     redirect '/voting'
   end
 
-  get '/new_location' do
+  get '/new_location', :auth => :user do
     erb :new_location
   end
 
-  post '/new_location' do
+  post '/new_location', :auth => :user do
     loc = {
       params[:location] => {
         "votes" => [],
@@ -320,8 +325,8 @@ end
   end
 
 ### admin user interaction
-  get '/activate' do
-    if login? && admin?
+  get '/activate', :auth => :user do
+    if admin?
       @title = 'Hallo '
       erb :activate
     else
@@ -329,7 +334,7 @@ end
     end
   end
 
-  post "/activate" do
+  post "/activate", :auth => :user do
     userTable[params[:user]][:enable] = true
     File.write('users.yml', userTable.to_yaml)
     if userTable[params[:user]][:enable] = true
@@ -351,7 +356,7 @@ end
       @message = 'Die Aktivierung war erfolgreich.'
       erb :layout
     else
-      if login? && admin?
+      if admin?
         @title = 'Hallo ' + name + '.'
         @message = 'Die Aktivierung war nicht erfolgreich!'
         erb :activate

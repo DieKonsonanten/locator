@@ -144,6 +144,16 @@ a, a:hover, a:focus {
   padding-bottom: 5px;
 }
 
+.result-div {
+  width: 50%;
+  position: relative;
+  left: 25%;
+  float: left;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  
+}
 
 /** Toggle Switch Button **/
 

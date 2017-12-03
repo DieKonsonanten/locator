@@ -160,18 +160,16 @@ class Locator < Sinatra::Base
           redirect "/voting"
         else
           # wrong password?
-          redirect "/login"
+          @message = 'Falscher User und/oder falsches Passwort.'
+          redirect '/login'
         end
       else
         # user not activated
-        @title = 'Herzlich Willkommen liebe Konsonanten!'
         @message = 'Dein User ist noch nicht freigeschaltet. Bitte wende dich an einen Admin.'
-        erb :index
       end
     else
-      @title = 'Registrierung!'
-      @message = 'Dieser Username existiert nicht. Bitte registriere dich zuerst.'
-      erb :signup
+      # wrong username
+      @message = 'Falscher User und/oder falsches Passwort.'
     end
   end
 
@@ -211,9 +209,8 @@ class Locator < Sinatra::Base
       redirect "/login"
     else
         # username already used
-        @title = 'Registrierung!'
         @message = "Dieser Username ist bereits vergeben. Bitte verwende einen anderen Namen."
-        erb :signup
+        redirect back
     end
   end
 

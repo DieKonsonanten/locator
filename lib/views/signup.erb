@@ -21,7 +21,7 @@
           </div>
           <div class="input-group">
               <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-              <input type="password" id="password" name="password" class="form-control" required autocomplete="on" placeholder="Passwort" onchange=" this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
+              <input type="password" id="password" name="password" class="form-control" required autocomplete="on" minlength="8" placeholder="Passwort" onchange=" this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
                 if(this.checkValidity()) form.confirmPassword.pattern = this.value;">
           </div>
           <div class="input-group">

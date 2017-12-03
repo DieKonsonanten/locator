@@ -11,8 +11,6 @@ require 'pp'
 # @example Star the application
 #  Locator.run!
 class Locator < Sinatra::Base
-  register Sinatra::ConfigFile
-  config_file '/Users/d0233972/.locator_config.yml'
   set :bind, '0.0.0.0'
 # gives hash    pp settings.email
 # gives value    pp settings.email[:user]
@@ -202,21 +200,12 @@ class Locator < Sinatra::Base
         :admin => false
       }
       File.write('users.yml', userTable.to_yaml)
-      # Pony.mail :to => admin_mails?,
-      #   :from => "noreply@konsonanten.de",
-      #   :subject => "Freigabe neuer Konsonant: #{params[:name]}!",
-      #   :html_body => erb(:to_activate, layout: false),
-      #   :via => :smtp,
-      #   :via_options => {
-      #     :address        => settings.email[:address],
-      #     :port           => settings.email[:port],
-      #     :enable_starttls_auto => true,
-      #     :user_name      => settings.email[:user_name],
-      #     :password       => settings.email[:password],
-      #     :authentication => :plain, # :plain, :login, :cram_md5, no auth by default
-      #     :domain         => "localhost.localdomain" # the HELO domain provided by the client to the server
-      #   }
-      #redirect "/login"
+      Pony.mail(:to => admin_mails?,
+        :from => "noreply@diekonsonanten.de",
+        :subject => "Freigabe neuer Konsonant: #{params[:name]}!",
+        :html_body => erb(:to_activate, layout: false),
+        :via => :sendmail)
+      redirect "/login"
     else
         # username already used
         pStatus = @UID_ALREADY_TAKEN_CODE
@@ -342,23 +331,16 @@ class Locator < Sinatra::Base
   end
 
   post "/activate", :auth => :user do
-    userTable[params[:user]][:enable] = true
+    userTable[params[:email]][:enable] = true
     File.write('users.yml', userTable.to_yaml)
-    if userTable[params[:user]][:enable] = true
-      Pony.mail :to => userTable[params[:user]][:email],
-        :from => "noreply@konsonanten.de",
+    if userTable[params[:email]][:enable] = true
+      Pony.mail(:to => params[:email],
+        :from => "noreply@diekonsonanten.de",
         :subject => "Dein Account wurde aktiviert!",
-        :html_body => erb(:activated, layout: false),
-        :via => :smtp,
-        :via_options => {
-          :address        => settings.email[:address],
-          :port           => settings.email[:port],
-          :enable_starttls_auto => true,
-          :user_name      => settings.email[:user_name],
-          :password       => settings.email[:password],
-          :authentication => :plain, # :plain, :login, :cram_md5, no auth by default
-          :domain         => "localhost.localdomain" # the HELO domain provided by the client to the server
-        }
+        :html_body => "<p> Hallo "+ userTable[params[:email]][:name] +"!</p>
+               <p> Dein Account wurde soeben aktiviert. </p>
+               <p> Viel Spaß beim Abstimmen. <br>
+               Die Konsonanten </p>")
       @title = 'Hallo ' + name + '.'
       @message = 'Die Aktivierung war erfolgreich.'
       @msg_type = 'success'

@@ -13,8 +13,22 @@
         <canvas id="bar" height="450" width="600" style="width: 500px; height: 300px;"></canvas>
       </div>
     </section>
+    <% if admin? %>
+    <form action='/do_activity' method='post'>
+      <select class="dropdown_activate" id="dropdown_activate" name="do_activity">
+      </select>
+      <button type='submit' class='btn btn-primary'>Unternehmung!</button>
+    </form>
+    <% end %>
   </div>
   <script>
+  
+  var myArray = '<%= activated? %>';
+  for(i=0; i<myArray.length; i++) {
+    
+  }
+  
+  
   var activity_labels= [];
   var myData = [];
   var bgColors = [];
@@ -23,6 +37,8 @@
   <% VotingTable.sort_by { |x| x.first.downcase }.each_with_index do |(activity, values),index| %>
     activity_labels.push('<%= activity %>');
     myData.push("<%= values['votes'].count %>");
+    var select = document.getElementById("dropdown_activate");
+    if (select !== null )  { select.options[select.options.length] = new Option('<%= activity %> (<%= values['votes'].count %>)', '<%= activity %>'); }
     bgColors.push(getRandomColor());
     HashTable['<%= activity %>'] = new Array();
     <% values['location'].each do |locations| %>

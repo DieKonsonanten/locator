@@ -372,6 +372,15 @@ class Locator < Sinatra::Base
       redirect "/voting"
     end
   end
+  
+  post "/do_activity", :auth => :user do
+    choosen_act = params[:do_activity]
+    session[:message] = 'Die Aktivität ' + choosen_act + ' wurde für den nächsten Termin ausgewählt.'
+    session[:msg_type] = 'success'
+    VotingTable[choosen_act]['votes'].clear
+    File.write('votes.yml', VotingTable.to_yaml)
+    redirect "voting"
+  end
 
   post "/activate", :auth => :user do
     userTable[params[:email]][:enable] = true

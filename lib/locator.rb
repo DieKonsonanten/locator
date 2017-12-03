@@ -86,6 +86,14 @@ class Locator < Sinatra::Base
       return admin_mails
     end
 
+    def mail_to_all_users
+      all_mails = []
+      allUsers = YAML.load_file('users.yml')
+      allUsers.each do |email, values|
+        all_mails.push(email)
+      end
+    end
+
     def activated?
       not_activated = []
       allUsers = YAML.load_file('users.yml')
@@ -306,7 +314,16 @@ class Locator < Sinatra::Base
         "location" => location
       }
       File.write('votes.yml', Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
+      if VotingTable[params[:activity]]
+      Pony.mail(:to => mail_to_all_users,
+        :from => "noreply@diekonsonanten.de",
+        :subject => "Eine neue Aktivität wurde hinzugefügt",
+        :html_body => "<p> Hallo lieber Konsonant!</p>
+               <p> " + name + " hat gerade die Aktivität " + params['activity'] + " hinzugefügt. Sofern du möchtest, kannst du deine Stimmen jetzt anpassen.</p>
+               <p> Viel Spaß beim Abstimmen. <br>
+               Die Konsonanten </p>")
       redirect '/voting'
+      end
     else
       session[:message] = "Die Aktivität "+ params[:activity] +" ist bereits hinterlegt. <a href=/new_location?activity=" + params[:activity] + ">Eine neue Location hinzufügen</a>"
       session[:msg_type] = 'info'

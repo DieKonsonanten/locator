@@ -216,6 +216,9 @@ class Locator < Sinatra::Base
 ### logged in user interaction
   get '/voting', :auth => :user do
       @title = 'Hallo ' + name + '. Bitte stimme ab!'
+      @message = session[:message]
+      @msg_type = session[:msg_type]
+      session[:message] = ""
       erb :voting
   end
 
@@ -268,11 +271,14 @@ class Locator < Sinatra::Base
   end
 
   get "/logout" do
-    session[:name] = nil
+    session.clear
     redirect "/"
   end
 
   get '/new_activity', :auth => :user do
+    @message = session[:message]
+    @msg_type = session[:msg_type]
+    session[:message] = ""
     erb :new_activity
   end
 
@@ -302,7 +308,8 @@ class Locator < Sinatra::Base
       File.write('votes.yml', Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
       redirect '/voting'
     else
-      @message = "Diese Aktivität ist bereits hinterlegt. Wenn du einen weiteren Ort für diese Aktivität hinzufügen möchtest klicke hier: href=#new_location?activity=[params['activity']!"
+      session[:message] = "Die Aktivität "+ params[:activity] +" ist bereits hinterlegt. <a href=/new_location?activity=" + params[:activity] + ">Eine neue Location hinzufügen</a>"
+      session[:msg_type] = 'info'
       redirect back
     end
   end
@@ -333,8 +340,8 @@ class Locator < Sinatra::Base
       VotingTable[params[:activity]]['location'].sort_by! { |h| h.first.first.downcase }
       File.write('votes.yml', VotingTable.to_yaml)
     else
-      @message = "Dieser Ort ist für params[:activity] bereits hinterlegt."
-      redirect "/voting"
+      session[:message] = "Der Ort " + params[:location] + " ist für " + params[:activity] + " bereits hinterlegt."
+      session[:msg_type] = 'info'
     end
     redirect '/voting'
   end

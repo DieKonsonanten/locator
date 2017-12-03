@@ -145,11 +145,15 @@ a, a:hover, a:focus {
 }
 
 .result-div {
+  display: inline-block;
+zoom: 1;
+display*: inline; /* ie hack */
   /*width: 80%;*/
-  position: relative;
-  left: 10%;
-  float: left;
-  min-height: 1px;
+  /*height: 50%;*/
+  /*position: relative;*/
+  /*left: 30%;*/
+  /*float: left;*/
+  /*min-height: 1px;*/
   /*padding-left: 15px;*/
   /*padding-right: 15px;*/
   

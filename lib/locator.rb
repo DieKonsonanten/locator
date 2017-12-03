@@ -27,7 +27,6 @@ class Locator < Sinatra::Base
     @MAX_VOTES_REACHED_CODE=900
     @UID_ALREADY_TAKEN_CODE=901
     @OK_CODE=200
-
   end
 
   register do
@@ -148,6 +147,9 @@ class Locator < Sinatra::Base
 ### not logged in
   get '/login' do
     @title = 'Herzlich Willkommen liebe Konsonanten!'
+    @message = session[:message]
+    @msg_type = session[:msg_type]
+    session[:message] = ""
     erb :index
   end
 
@@ -162,18 +164,21 @@ class Locator < Sinatra::Base
           redirect "/voting"
         else
           # wrong password?
-          @message = 'Falscher User und/oder falsches Passwort.'
+          session[:message] = 'Falscher User und/oder falsches Passwort.'
+          session[:msg_type] = 'danger'
           redirect '/login'
-          pp "1"
         end
       else
         # user not activated
-        @message = 'Dein User ist noch nicht freigeschaltet. Bitte wende dich an einen Admin.'
+        session[:message]= 'Dein User ist noch nicht freigeschaltet. Bitte wende dich an einen Admin.'
+        session[:msg_type] = 'info'
+        redirect '/login'
       end
     else
       # wrong username
-      @message = 'Falscher User und/oder falsches Passwort.'
-      pp "2"
+      session[:message] = "Falscher User und/oder falsches Passwort."
+      session[:msg_type] = 'danger'
+      redirect '/login'
     end
   end
 
@@ -356,11 +361,13 @@ class Locator < Sinatra::Base
         }
       @title = 'Hallo ' + name + '.'
       @message = 'Die Aktivierung war erfolgreich.'
+      @msg_type = 'success'
       erb :layout
     else
       if admin?
         @title = 'Hallo ' + name + '.'
         @message = 'Die Aktivierung war nicht erfolgreich!'
+        @msg_type = 'danger'
         erb :activate
       else
         redirect "/voting"

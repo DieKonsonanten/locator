@@ -22,7 +22,6 @@
   
   <% VotingTable.sort_by { |x| x.first.downcase }.each_with_index do |(activity, values),index| %>
     activity_labels.push('<%= activity %>');
-    console.log('<%= activity %>');
     myData.push("<%= values['votes'].count %>");
     bgColors.push(getRandomColor());
     HashTable['<%= activity %>'] = new Array();

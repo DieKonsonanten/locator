@@ -17,7 +17,7 @@
             <div class="form-group">
               <label class="control-label col-lg-2" for="title">Aktivität</label>
               <div class="col-lg-10">
-                <input class="form-control" id="activity" name="activity" type="text" pattern="[^\s]+">
+                <input class="form-control" id="activity" name="activity" type="text" pattern="[^\s]+" title="ohne Leerzeichen">
               </div>
             </div>
             <!-- Content -->
@@ -37,7 +37,7 @@
               </div>
               <label class="control-label col-lg-2" for="content">URL</label>
               <div class="add-location-txtfield col-lg-10">
-                <input type="text" class="form-control" id="url1" name="url1" value="">
+                <input type="url" class="form-control" id="url1" name="url1" value="https://">
               </div>
               <div class="add-location-btn">
                 <button class="btn btn-success" type="button"  onclick="counter_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>

@@ -25,6 +25,7 @@ class Locator < Sinatra::Base
 
     super()
     @MAX_VOTES_REACHED_CODE=900
+    @UID_ALREADY_TAKEN_CODE=901
     @OK_CODE=200
 
   end
@@ -179,6 +180,7 @@ class Locator < Sinatra::Base
   end
 
   post "/signup" do
+    pStatus = @OK_CODE
     if not userTable[params[:name]]
       password_salt = BCrypt::Engine.generate_salt
       password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
@@ -192,26 +194,26 @@ class Locator < Sinatra::Base
         :admin => false
       }
       File.write('users.yml', userTable.to_yaml)
-      Pony.mail :to => admin_mails?,
-        :from => "noreply@konsonanten.de",
-        :subject => "Freigabe neuer Konsonant: #{params[:name]}!",
-        :html_body => erb(:to_activate, layout: false),
-        :via => :smtp,
-        :via_options => {
-          :address        => settings.email[:address],
-          :port           => settings.email[:port],
-          :enable_starttls_auto => true,
-          :user_name      => settings.email[:user_name],
-          :password       => settings.email[:password],
-          :authentication => :plain, # :plain, :login, :cram_md5, no auth by default
-          :domain         => "localhost.localdomain" # the HELO domain provided by the client to the server
-        }
-      redirect "/login"
+      # Pony.mail :to => admin_mails?,
+      #   :from => "noreply@konsonanten.de",
+      #   :subject => "Freigabe neuer Konsonant: #{params[:name]}!",
+      #   :html_body => erb(:to_activate, layout: false),
+      #   :via => :smtp,
+      #   :via_options => {
+      #     :address        => settings.email[:address],
+      #     :port           => settings.email[:port],
+      #     :enable_starttls_auto => true,
+      #     :user_name      => settings.email[:user_name],
+      #     :password       => settings.email[:password],
+      #     :authentication => :plain, # :plain, :login, :cram_md5, no auth by default
+      #     :domain         => "localhost.localdomain" # the HELO domain provided by the client to the server
+      #   }
+      #redirect "/login"
     else
         # username already used
-        @message = "Dieser Username ist bereits vergeben. Bitte verwende einen anderen Namen."
-        redirect back
+        pStatus = @UID_ALREADY_TAKEN_CODE
     end
+    status pStatus
   end
 
 ### logged in user interaction

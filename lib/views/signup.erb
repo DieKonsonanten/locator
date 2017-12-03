@@ -5,10 +5,9 @@
         <i class="icon-remove"></i>
       </button>
       <strong>Du bist bereits registriert? Zum Einloggen <a href="/">hier lang.</a></strong></br> 
-      Nach Absenden des Formulars muss dein Account durch einen Admin freigeschaltet werden. Die Admins werden per Mail über den neuen Account informiert und ihn schnellstmöglich freischalten. Du erhälst nach erfolgreicher Freischaltung eine Mail.
     </div>
     
-    <form class="login-form" action="/signup" method="post">        
+    <form class="login-form" action="/signup" method="post" name="signup_form">        
       <div class="login-wrap">
           <p class="login-img"><i class="icon_lock_alt"></i></p>
           <div class="input-group">
@@ -32,7 +31,7 @@
               <!-- <input type="checkbox" value="remember-me"> Remember me -->
               <!-- <span class="pull-right"> <a href="#"> Forgot Password?</a></span> -->
           </label>
-          <button class="btn btn-login btn-lg btn-block" type="submit">Registrierung</button>
+          <button class="btn btn-login btn-lg btn-block" onclick="signup_user(this);">Registrierung</button>
           <button class="btn btn-info btn-lg btn-block" type="reset">Zurücksetzen</button>
           
       </div>

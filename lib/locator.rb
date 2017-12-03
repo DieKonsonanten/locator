@@ -277,29 +277,34 @@ class Locator < Sinatra::Base
   end
 
   post '/new_activity', :auth => :user do
-    @params = params
-    location = []
-    @params.each do |name, value|
-      if name.match('location')
-        instance = name.slice(8)
-        url = 'url' + instance
-        loc = {
-          params[name] => {
-          "votes" => [],
-          "url" => params[url] }
-          }
-        location.push(loc)
-        location.sort_by! { |h| h.first.first.downcase }
+    if not VotingTable[params[:activity]]
+      @params = params
+      location = []
+      @params.each do |name, value|
+        if name.match('location')
+          instance = name.slice(8)
+          url = 'url' + instance
+          loc = {
+            params[name] => {
+            "votes" => [],
+            "url" => params[url] }
+            }
+          location.push(loc)
+          location.sort_by! { |h| h.first.first.downcase }
+        end
       end
-    end
 
-    VotingTable[params['activity']] = {
-      "desc" => params['desc'],
-      "votes" => [],
-      "location" => location
-    }
-    File.write('votes.yml', Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
-    redirect '/voting'
+      VotingTable[params['activity']] = {
+        "desc" => params['desc'],
+        "votes" => [],
+        "location" => location
+      }
+      File.write('votes.yml', Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
+      redirect '/voting'
+    else
+      @message = "Diese Aktivität ist bereits hinterlegt. Wenn du einen weiteren Ort für diese Aktivität hinzufügen möchtest klicke hier: href=#new_location?activity=[params['activity']!"
+      redirect back
+    end
   end
 
   get '/new_location', :auth => :user do
@@ -307,16 +312,30 @@ class Locator < Sinatra::Base
   end
 
   post '/new_location', :auth => :user do
-    loc = {
-      params[:location] => {
-        "votes" => [],
-        "url" => params[:url]
+    found = 0
+    VotingTable[params[:activity]]['location'].each do |locs|
+      locs.each do |loc, values|
+        if loc == params[:location]
+          found += 1
+          break
+        end
+      end
+    end
+    if found == 0
+      location = {
+        params[:location] => {
+          "votes" => [],
+          "url" => params[:url]
+        }
       }
-    }
 
-    VotingTable[params[:activity]]['location'].push(loc)
-    VotingTable[params[:activity]]['location'].sort_by! { |h| h.first.first.downcase }
-    File.write('votes.yml', VotingTable.to_yaml)
+      VotingTable[params[:activity]]['location'].push(location)
+      VotingTable[params[:activity]]['location'].sort_by! { |h| h.first.first.downcase }
+      File.write('votes.yml', VotingTable.to_yaml)
+    else
+      @message = "Dieser Ort ist für params[:activity] bereits hinterlegt."
+      redirect "/voting"
+    end
     redirect '/voting'
   end
 

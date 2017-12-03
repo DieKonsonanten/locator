@@ -145,9 +145,9 @@ a, a:hover, a:focus {
 }
 
 .result-div {
-  width: 50%;
+  /*width: 80%;*/
   position: relative;
-  left: 25%;
+  left: 10%;
   float: left;
   min-height: 1px;
   padding-left: 15px;

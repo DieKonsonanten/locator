@@ -60,7 +60,7 @@ class Locator < Sinatra::Base
 ## Helpers
   helpers do
     def login?
-      if session[:name].nil?
+      if session[:email].nil?
         return false
       else
         return true
@@ -72,17 +72,16 @@ class Locator < Sinatra::Base
     end
 
     def admin?
-      userTable = YAML.load_file('users.yml')
-      return userTable[name][:admin]
+      return session[:admin]
     end
 
     def admin_mails?
       admin_mails = []
       allUsers = YAML.load_file('users.yml')
-      allUsers.each do |name, values|
-        values.each do |desc, value|
-          if desc.to_s == 'admin' && value == true
-            email = allUsers[name][:email]
+      allUsers.each do |email, values|
+        values.each do |key, value|
+          if key.to_s == 'admin' && value == true
+            email = email
             admin_mails.push(email)
           end
         end
@@ -93,10 +92,10 @@ class Locator < Sinatra::Base
     def activated?
       not_activated = []
       allUsers = YAML.load_file('users.yml')
-      allUsers.each do |name, values|
-        values.each do |desc, value|
-          if desc.to_s == 'enable' && value == false
-            not_activated.push(name)
+      allUsers.each do |email, values|
+        values.each do |key, value|
+          if key.to_s == 'enable' && value == false
+            not_activated.push(email)
           end
         end
       end
@@ -153,16 +152,19 @@ class Locator < Sinatra::Base
   end
 
   post "/login" do
-    if userTable.has_key?(params[:name])
-      if userTable[params[:name]][:enable]
-        user = userTable[params[:name]]
+    if userTable.has_key?(params[:email])
+      if userTable[params[:email]][:enable]
+        user = userTable[params[:email]]
         if user[:passwordhash] == BCrypt::Engine.hash_secret(params[:password], user[:salt])
-          session[:name] = params[:name]
+          session[:email] = params[:email]
+          session[:name] = userTable[params[:email]][:name]
+          session[:admin] = userTable[params[:email]][:admin]
           redirect "/voting"
         else
           # wrong password?
           @message = 'Falscher User und/oder falsches Passwort.'
           redirect '/login'
+          pp "1"
         end
       else
         # user not activated
@@ -171,6 +173,7 @@ class Locator < Sinatra::Base
     else
       # wrong username
       @message = 'Falscher User und/oder falsches Passwort.'
+      pp "2"
     end
   end
 
@@ -181,13 +184,13 @@ class Locator < Sinatra::Base
 
   post "/signup" do
     pStatus = @OK_CODE
-    if not userTable[params[:name]]
+    if not userTable[params[:email]]
       password_salt = BCrypt::Engine.generate_salt
       password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
 
       #ideally this would be saved into a database, hash used just for sample
-      userTable[params[:name]] = {
-        :email => params[:email],
+      userTable[params[:email]] = {
+        :name => params[:name],
         :salt => password_salt,
         :passwordhash => password_hash,
         :enable => false,

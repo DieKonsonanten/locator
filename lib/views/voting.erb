@@ -15,6 +15,13 @@
             </h4>
           </li>
           <li class="voting_item">
+              <form action="delete_activity" method="post">
+                  <button class="btn btn-primary" type="submit" name="delete_activity" value="<%= activity %>">
+                  <i class="icon_trash"></i>
+                </button>
+              </form>
+          </li> 
+          <li class="voting_item">
             <label class="switch switch-slide">
               <input id="<%= activity %>" class="switch-input" type="checkbox" onclick="change_voting(this);"<%= getCheckedActivity(activity) %> >
                 <span class="switch-label" data-on="Ja" data-off="Nein"></span>

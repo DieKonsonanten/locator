@@ -104,8 +104,13 @@ li.voting_item:first-child {
   width: 10px;
 }
 
+li.voting_item:nth-last-child(2) form {
+  text-align: right;
+}
+
 li.voting_item:last-child {
   text-align: right;
+  width: 10px;
 }
 
 li.voting_item a {

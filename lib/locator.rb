@@ -382,6 +382,20 @@ class Locator < Sinatra::Base
     redirect "voting"
   end
 
+  post "/delete_activity", :auth => :user do
+    choosen_act = params[:delete_activity]
+    Pony.mail(:to => admin_mails?,
+      :from => "noreply@diekonsonanten.de",
+      :subject => "Eine Aktivität soll gelöscht werden!",
+      :html_body => "<p> Hallo Admins!</p>
+             <p> Der User " + name + " möchte, dass die Aktivität '" + choosen_act + "'  gelöscht wird! </p>
+             <p> Viele Grüße <br>
+             Die Konsonanten </p>")
+    session[:message] = 'Die Admins wurden per Mail informiert, dass die Aktivität "' + choosen_act + '" gelöscht werden soll.'
+    session[:msg_type] = 'success'
+    redirect "voting"
+  end
+
   post "/activate", :auth => :user do
     userTable[params[:email]][:enable] = true
     File.write('users.yml', userTable.to_yaml)

@@ -3,7 +3,7 @@
     <form action='/activate' method='post'>
       <select class="dropdown_activate" name="email">
         <script>
-          var myArray = '<%= activated? %>';
+          var myArray = [<%= activated? %>];
           for(i=0; i<myArray.length; i++) {
             document.write('<option value="' + myArray[i] +'" name="' + myArray[i] + '">' + myArray[i] + '</option>');
           }

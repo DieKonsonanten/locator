@@ -100,11 +100,11 @@ class Locator < Sinatra::Base
       allUsers.each do |email, values|
         values.each do |key, value|
           if key.to_s == 'enable' && value == false
-            not_activated.push(email)
+            not_activated.push('"' + email + '"')
           end
         end
       end
-      return not_activated
+      return not_activated.join(",")
     end
 
     def to_boolean(str)

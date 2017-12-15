@@ -17,7 +17,8 @@ class Locator < Sinatra::Base
 
   enable :sessions
   set :root, File.dirname(__FILE__)
-
+  $FILENAME_USERS="data/users.yml"
+  $FILENAME_VOTES='data/votes.yml'
   # global vars
   def initialize
 
@@ -37,21 +38,21 @@ class Locator < Sinatra::Base
 
   
   begin
-    userTable = YAML.load_file('users.yml')
+    userTable = YAML.load_file($FILENAME_USERS)
     puts "use existing user table"
   rescue Errno::ENOENT
     puts "creating new user table"
     userTable = {}
-    @store_user = YAML::Store.new 'users.yml'
+    @store_user = YAML::Store.new $FILENAME_USERS
   end
 
   begin
-    VotingTable = YAML.load_file('votes.yml')
+    VotingTable = YAML.load_file($FILENAME_VOTES)
     puts "use existing voting table"
   rescue Errno::ENOENT
     puts "creating new voting table"
     VotingTable = {}
-    @store_votes = YAML::Store.new 'votes.yml'
+    @store_votes = YAML::Store.new $FILENAME_VOTES
   end
 
 ## Helpers
@@ -74,7 +75,7 @@ class Locator < Sinatra::Base
 
     def admin_mails?
       admin_mails = []
-      allUsers = YAML.load_file('users.yml')
+      allUsers = YAML.load_file($FILENAME_USERS)
       allUsers.each do |email, values|
         values.each do |key, value|
           if key.to_s == 'admin' && value == true
@@ -83,13 +84,12 @@ class Locator < Sinatra::Base
           end
         end
       end
-      pp admin_mails7
       return admin_mails
     end
 
     def mail_to_all_users
       all_mails = []
-      allUsers = YAML.load_file('users.yml')
+      allUsers = YAML.load_file($FILENAME_USERS)
       allUsers.each do |email, values|
         all_mails.push(email)
       end
@@ -98,7 +98,7 @@ class Locator < Sinatra::Base
 
     def activated?
       not_activated = []
-      allUsers = YAML.load_file('users.yml')
+      allUsers = YAML.load_file($FILENAME_USERS)
       allUsers.each do |email, values|
         values.each do |key, value|
           if key.to_s == 'enable' && value == false
@@ -114,7 +114,7 @@ class Locator < Sinatra::Base
     end
 
     def getCheckedActivity(str)
-      allVotes = YAML.load_file('votes.yml')
+      allVotes = YAML.load_file($FILENAME_VOTES)
       if allVotes[str]['votes'].include? name
         return "checked"
       else
@@ -123,7 +123,7 @@ class Locator < Sinatra::Base
     end
 
     def getCheckedLocation(location, activity)
-      allVotes = YAML.load_file('votes.yml')
+      allVotes = YAML.load_file($FILENAME_VOTES)
       VotingTable[activity]['location'].each do |list|
         if list.has_key? (location)
           index = VotingTable[activity]['location'].index(list)
@@ -154,6 +154,9 @@ class Locator < Sinatra::Base
 
 ### not logged in
   get '/login' do
+    if login? 
+      redirect '/voting'
+    end
     @title = 'Herzlich Willkommen liebe Konsonanten!'
     @message = session[:message]
     @msg_type = session[:msg_type]
@@ -162,6 +165,7 @@ class Locator < Sinatra::Base
   end
 
   post "/login" do
+    params[:email] = params[:email].downcase
     if userTable.has_key?(params[:email])
       if userTable[params[:email]][:enable]
         user = userTable[params[:email]]
@@ -197,6 +201,8 @@ class Locator < Sinatra::Base
 
   post "/signup" do
     pStatus = @OK_CODE
+    params[:email] = params[:email].downcase
+    params[:name] = params[:name].downcase
     if not userTable[params[:email]]
       password_salt = BCrypt::Engine.generate_salt
       password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
@@ -209,7 +215,7 @@ class Locator < Sinatra::Base
         :enable => false,
         :admin => false
       }
-      File.write('users.yml', userTable.to_yaml)
+      File.write($FILENAME_USERS, userTable.to_yaml)
       Pony.mail(:to => admin_mails?,
         :from => "noreply@diekonsonanten.de",
         :subject => "Freigabe neuer Konsonant: #{params[:name]}!",
@@ -245,7 +251,7 @@ class Locator < Sinatra::Base
     else
       VotingTable[vote]["votes"].delete(name)
     end
-    File.write('votes.yml', VotingTable.to_yaml)
+    File.write($FILENAME_VOTES, VotingTable.to_yaml)
     status pStatus
   end
 
@@ -266,7 +272,7 @@ class Locator < Sinatra::Base
         end
       VotingTable[activity]['location'][index][location]['votes'].push(name)
     end
-    File.write('votes.yml', VotingTable.to_yaml)
+    File.write($FILENAME_VOTES, VotingTable.to_yaml)
     status pStatus
   end
 
@@ -315,7 +321,7 @@ class Locator < Sinatra::Base
         "votes" => [],
         "location" => location
       }
-      File.write('votes.yml', Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
+      File.write($FILENAME_VOTES, Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
       pp mail_to_all_users
       if VotingTable[params[:activity]]
       Pony.mail(:to => mail_to_all_users,
@@ -358,7 +364,7 @@ class Locator < Sinatra::Base
 
       VotingTable[params[:activity]]['location'].push(location)
       VotingTable[params[:activity]]['location'].sort_by! { |h| h.first.first.downcase }
-      File.write('votes.yml', VotingTable.to_yaml)
+      File.write($FILENAME_VOTES, VotingTable.to_yaml)
     else
       session[:message] = "Der Ort " + params[:location] + " ist für " + params[:activity] + " bereits hinterlegt."
       session[:msg_type] = 'info'
@@ -381,7 +387,7 @@ class Locator < Sinatra::Base
     session[:message] = 'Die Aktivität ' + choosen_act + ' wurde für den nächsten Termin ausgewählt.'
     session[:msg_type] = 'success'
     VotingTable[choosen_act]['votes'].clear
-    File.write('votes.yml', VotingTable.to_yaml)
+    File.write($FILENAME_VOTES, VotingTable.to_yaml)
     redirect "voting"
   end
 
@@ -401,7 +407,7 @@ class Locator < Sinatra::Base
 
   post "/activate", :auth => :user do
     userTable[params[:email]][:enable] = true
-    File.write('users.yml', userTable.to_yaml)
+    File.write($FILENAME_USERS, userTable.to_yaml)
     if userTable[params[:email]][:enable] = true
       Pony.mail(:to => params[:email],
         :from => "noreply@diekonsonanten.de",

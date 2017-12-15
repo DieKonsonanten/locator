@@ -83,6 +83,7 @@ class Locator < Sinatra::Base
           end
         end
       end
+      pp admin_mails7
       return admin_mails
     end
 
@@ -92,6 +93,7 @@ class Locator < Sinatra::Base
       allUsers.each do |email, values|
         all_mails.push(email)
       end
+      return all_mails
     end
 
     def activated?
@@ -314,6 +316,7 @@ class Locator < Sinatra::Base
         "location" => location
       }
       File.write('votes.yml', Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
+      pp mail_to_all_users
       if VotingTable[params[:activity]]
       Pony.mail(:to => mail_to_all_users,
         :from => "noreply@diekonsonanten.de",

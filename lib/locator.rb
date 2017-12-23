@@ -419,7 +419,7 @@ class Locator < Sinatra::Base
       @title = 'Hallo ' + name + '.'
       @message = 'Die Aktivierung war erfolgreich.'
       @msg_type = 'success'
-      erb :layout
+      redirect "/voting"
     else
       if admin?
         @title = 'Hallo ' + name + '.'

@@ -35,7 +35,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thin'
   spec.add_dependency 'colorize'
   spec.add_dependency 'bcrypt'
-  spec.add_dependency 'pony'
+  spec.add_dependency 'mail', '~> 2.6.0'
+  spec.add_dependency 'pony', '~> 1.11.0'
   spec.add_dependency 'sinatra-config-file'
 
   spec.add_development_dependency "bundler", "~> 1.15"

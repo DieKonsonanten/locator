@@ -202,7 +202,6 @@ class Locator < Sinatra::Base
   post "/signup" do
     pStatus = @OK_CODE
     params[:email] = params[:email].downcase
-    params[:name] = params[:name].downcase
     if not userTable[params[:email]]
       password_salt = BCrypt::Engine.generate_salt
       password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)

@@ -6,17 +6,19 @@ require 'yaml/store'
 require 'bcrypt'
 require 'pony'
 require 'pp'
+require 'rack/ssl'
 
 # This class is the Base Class of the locator.
 # @example Star the application
 #  Locator.run!
 class Locator < Sinatra::Base
   set :bind, '0.0.0.0'
-# gives hash    pp settings.email
-# gives value    pp settings.email[:user]
 
-  enable :sessions
+  use Rack::SSL
+  use Rack::Session::Cookie, :expire_after => 86400, :secret => 'mysecret'
+
   set :root, File.dirname(__FILE__)
+
   $FILENAME_USERS="data/users.yml"
   $FILENAME_VOTES='data/votes.yml'
   # global vars
@@ -321,7 +323,6 @@ class Locator < Sinatra::Base
         "location" => location
       }
       File.write($FILENAME_VOTES, Hash[VotingTable.sort_by { |x| x.first.downcase }].to_yaml)
-      pp mail_to_all_users
       if VotingTable[params[:activity]]
       Pony.mail(:to => mail_to_all_users,
         :from => "noreply@diekonsonanten.de",
@@ -404,7 +405,7 @@ class Locator < Sinatra::Base
     redirect "voting"
   end
 
-  post "/activate", :auth => :user do
+  post "/activate" do
     userTable[params[:email]][:enable] = true
     File.write($FILENAME_USERS, userTable.to_yaml)
     if userTable[params[:email]][:enable] = true

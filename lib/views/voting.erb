@@ -40,14 +40,14 @@
                   <label>
                     <input name="<%=activity%>_location" id="<%= location %>" value="<%= location %>" type="radio" onclick="change_location(this,'<%= activity %>');"<%= getCheckedLocation(location, activity) %>>
                     <%= location %>
-                    <a href="http://<%= infos['url'] %>"><%= infos['url']%></a>
+                    <a href="<%= infos['url'] %>"><%= infos['url']%></a>
                   </label>
                 </div>
               <% else %>
                 <div>
                   <label>
                     <%= location %>
-                    <a href="http://<%= infos['url'] %>"><%= infos['url']%></a>
+                    <a href="<%= infos['url'] %>"><%= infos['url']%></a>
                   </label>
                 </div>
               <% end %>

@@ -1,8 +1,9 @@
 FROM ruby:2.3.4
 MAINTAINER Die Konsonanten <dev@diekonsonanten.de>
 
+ARG BUILD_ENV
 ENV APP_HOME /opt/locator
-ENV RACK_ENV production
+ENV RACK_ENV $BUILD_ENV
 ENV MAIN_APP_FILE locator.rb
 
 RUN apt-get update && \

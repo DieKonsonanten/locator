@@ -7,15 +7,22 @@ require 'bcrypt'
 require 'pony'
 require 'pp'
 require 'rack/ssl'
+require 'uri'
+require 'cgi'
 
 # This class is the Base Class of the locator.
 # @example Star the application
 #  Locator.run!
 class Locator < Sinatra::Base
   set :bind, '0.0.0.0'
-
-  use Rack::SSL
-  use Rack::Session::Cookie, :expire_after => 86400, :secret => 'mysecret'
+  
+  configure :production do
+  	use Rack::SSL
+  	use Rack::Session::Cookie, :expire_after => 86400, :secret => 'mysecret'
+  end
+  configure :development do
+	enable :sessions
+  end
 
   set :root, File.dirname(__FILE__)
 
@@ -203,6 +210,7 @@ class Locator < Sinatra::Base
 
   post "/signup" do
     pStatus = @OK_CODE
+    params[:name] = CGI.escapeHTML(params[:name])
     params[:email] = params[:email].downcase
     if not userTable[params[:email]]
       password_salt = BCrypt::Engine.generate_salt
@@ -300,6 +308,13 @@ class Locator < Sinatra::Base
   end
 
   post '/new_activity', :auth => :user do
+    if  (params[:activity] =~ /[A-Za-z\s\/\-]$/).nil?
+	session[:message] = "Badass over here! Der Name ist nicht valide!"
+	session[:msg_type] = 'danger'
+	redirect back
+    end
+    params[:activity] = CGI.escapeHTML(params[:activity])
+    params[:desc] = CGI.escapeHTML(params[:desc])
     if not VotingTable[params[:activity]]
       @params = params
       location = []
@@ -308,9 +323,9 @@ class Locator < Sinatra::Base
           instance = name.slice(8)
           url = 'url' + instance
           loc = {
-            params[name] => {
+            CGI.escapeHTML(params[name]) => {
             "votes" => [],
-            "url" => params[url] }
+            "url" => URI.escape(params[url]) }
             }
           location.push(loc)
           location.sort_by! { |h| h.first.first.downcase }
@@ -345,6 +360,7 @@ class Locator < Sinatra::Base
   end
 
   post '/new_location', :auth => :user do
+    params[:location] = CGI.escapeHTML(params[:location])
     found = 0
     VotingTable[params[:activity]]['location'].each do |locs|
       locs.each do |loc, values|
@@ -358,7 +374,7 @@ class Locator < Sinatra::Base
       location = {
         params[:location] => {
           "votes" => [],
-          "url" => params[:url]
+          "url" => URI.escape(params[:url])
         }
       }
 

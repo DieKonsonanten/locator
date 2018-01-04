@@ -1,15 +1,15 @@
 <html>
 <body>
 <div class="panel-group m-bot20" id="accordion">
-    <% VotingTable.sort_by { |x| x.first.downcase }.each do |activity, values| %>
+    <% VotingTable.sort_by { |x| x.first.downcase }.each_with_index do |(activity, values),index| %>
     <div class="panel panel-default accordion-toggle collapsed"  data-parent="#accordion">
     <div class="panel-heading">
       <ul class="voting_item">
-          <li class="voting_item"><a href="#collapse<%= activity %>" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion">
+          <li class="voting_item"><a href="#collapse<%= index %>" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion">
             <i class="fa fa-chevron-down"></i></a></li>
           <li class="voting_item">
             <h4 class="panel-title">
-              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= activity %>">
+              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>">
                 <%= activity %>
               </a>
             </h4>
@@ -30,7 +30,7 @@
         </li>
       </ul>
     </div>
-    <div id="collapse<%= activity %>" class="panel-collapse collapse" style="height: auto;">
+    <div id="collapse<%= index %>" class="panel-collapse collapse" style="height: auto;">
       <div class="panel-body">
         <%= values['desc'] %>
           <% values['location'].each do |locations| %>
@@ -40,20 +40,20 @@
                   <label>
                     <input name="<%=activity%>_location" id="<%= location %>" value="<%= location %>" type="radio" onclick="change_location(this,'<%= activity %>');"<%= getCheckedLocation(location, activity) %>>
                     <%= location %>
-                    <a href="<%= infos['url'] %>"><%= infos['url']%></a>
+                    <a href="<%= infos['url'] %>"><%= URI.unescape(infos['url'])%></a>
                   </label>
                 </div>
               <% else %>
                 <div>
                   <label>
                     <%= location %>
-                    <a href="<%= infos['url'] %>"><%= infos['url']%></a>
+                    <a href="<%= infos['url'] %>"><%= URI.unescape(infos['url'])%></a>
                   </label>
                 </div>
               <% end %>
             <% end %>
           <% end %>
-          <a class="btn btn-primary btn-location" type="button" onclick="window.location.href='/new_location?activity=<%= activity%>'"><span class="icon_plus"></span></a>
+          <a class="btn btn-primary btn-location" type="button" onclick="window.location.href='/new_location?activity=<%= URI.escape(activity)%>'"><span class="icon_plus"></span></a>
         </div>
       </div>
     </div>

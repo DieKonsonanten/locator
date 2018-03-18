@@ -11,6 +11,8 @@
 /tmp/
 Gemfile.lock
 *.yml
+postfix/main.cf
+postfix/sasl_passwd
 
 # Used by dotenv library to load environment variables.
 # .env

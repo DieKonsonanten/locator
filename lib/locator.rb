@@ -45,7 +45,9 @@ class Locator < Sinatra::Base
     end
   end
 
-  
+  unless Dir.exists?(File.dirname($FILENAME_USERS))
+    FileUtils.mkpath(File.dirname($FILENAME_USERS))
+  end
   begin
     userTable = YAML.load_file($FILENAME_USERS)
     puts "use existing user table"

@@ -32,6 +32,8 @@ RUN	sed -i 's/^#\(SYSLOGNG_OPTS="--no-caps"\)/\1/g' /etc/default/syslog-ng
 
 RUN bundle && bundle exec rake install
 
+VOLUME ["/opt/locator/data"]
+
 EXPOSE 4567
 
 CMD ["sh", "-c", "service syslog-ng start; service postfix start; locator"]

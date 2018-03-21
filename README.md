@@ -16,9 +16,9 @@ Or install it yourself as (currently not available):
 
 Just run `locator` to start the webserver.
 
-### Docker deployment
+### Docker deployment for testing
 ```bash
-docker build -t locator .
+docker build --build-arg BUILD_ENV=development -t locator .
 docker run -p 4567:4567 locator 
 ```
 

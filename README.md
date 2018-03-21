@@ -16,6 +16,15 @@ Or install it yourself as (currently not available):
 
 Just run `locator` to start the webserver.
 
+### Docker deployment
+```bash
+docker build -t locator .
+docker run -p 4567:4567 locator 
+```
+
+Optionally you can mount a directory into `/opt/locator/data` to persist data.
+
+
 ## Development
 
 After checking out the repo, run `bundle` to install dependencies. Then, run `bundle exec rake test` to run the tests.

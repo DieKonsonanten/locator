@@ -35,7 +35,7 @@
   var HashTable = new Object();
   
   <% VotingTable.sort_by { |x| x.first.downcase }.each_with_index do |(activity, values),index| %>
-  <%  shortened_activity = activity.length > 15 ? activity.gsub(/^([a-zA-Z0-9]{1,15}).*$/, '\1...') : activity %>
+  <%  shortened_activity = activity.length > 15 ? activity.gsub(/^([a-zA-Z0-9äöüß]{1,15}).*$/, '\1...') : activity %>
     activity_labels.push('<%= shortened_activity %>');
     myData.push("<%= values['votes'].count %>");
     var select = document.getElementById("dropdown_activate");
@@ -45,7 +45,7 @@
     <% values['location'].each do |locations| %>
       var _count = parseInt("<%= values['location'].count %>");
       <% locations.each do |location, infos| %>
-      <%   location = location.length > 10 ? location.gsub(/^([a-zA-Z0-9]{1,10}).*$/, '\1...') : location %>
+      <%   location = location.length > 10 ? location.gsub(/^([a-zA-Z0-9äöüß]{1,10}).*$/, '\1...') : location %>
         var dispStr = (_count > 1) ? "<%= location %> :\t<%= infos['votes'].count %>" :"<%= location %>";
         HashTable['<%= shortened_activity %>'].push(dispStr);
       <% end %>

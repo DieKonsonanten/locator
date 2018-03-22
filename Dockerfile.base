@@ -1,0 +1,25 @@
+FROM ruby:2.3.4
+MAINTAINER Die Konsonanten <dev@diekonsonanten.de>
+
+ENV APP_HOME /opt/locator
+
+RUN apt-get update && \
+    apt-get upgrade -y 
+RUN apt-get install -q -y vim libsasl2-modules syslog-ng
+# Install Postfix.
+run echo "postfix postfix/main_mailer_type string Internet site" > preseed.txt
+run echo "postfix postfix/mailname string diekonsonanten.de" >> preseed.txt
+# Use Mailbox format.
+run debconf-set-selections preseed.txt
+run DEBIAN_FRONTEND=noninteractive apt-get install -q -y postfix
+
+RUN mkdir -p $APP_HOME
+
+WORKDIR $APP_HOME
+
+COPY Gemfile $APP_HOME/
+COPY locator.gemspec $APP_HOME/
+COPY Rakefile $APP_HOME/
+COPY lib/lib/version.rb $APP_HOME/lib/lib/
+
+RUN bundle
